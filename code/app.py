@@ -7,9 +7,24 @@ from dash.dependencies import Input, Output, State
 from LogisticRegression import LogisticRegression
 from LogisticRegression import Ridge
 from LogisticRegression import RidgePenalty
+import mlflow
+import os
 
 app = dash.Dash(__name__)
 app.title = "Car Prediction App"
+
+try:
+    # Add any initialization code here if needed
+    mlflow.set_tracking_uri("http://mlflow.ml.brain.cs.ait.ac.th/")
+    os.environ["MLFLOW_TRACKING_USERNAME"] = "admin"
+    os.environ["MLFLOW_TRACKING_PASSWORD"] = "password"
+    os.environ["LOGNAME"] = "st125287-a3"
+    model_name = "st125287-a3-model"
+    model_version = 1
+
+    model = mlflow.pyfunc.load_model(model_uri=f"models:/{model_name}/{model_version}")
+except Exception as e:
+    print(f"Error: {str(e)}")
 
 app.layout = html.Div([
     html.H1("Car Selling Price Prediction", style={'text-align': 'center', 'color': '#4a4a4a', 'margin-bottom': '20px'}),
@@ -83,6 +98,15 @@ def prediction(year: float, engine: float, km_driven: float, mileage: float) -> 
     :return: The predicted category of selling price of the car.
     """
     try:
+        # mlflow.set_tracking_uri("http://mlflow.ml.brain.cs.ait.ac.th/")
+        # os.environ["MLFLOW_TRACKING_USERNAME"] = "admin"
+        # os.environ["MLFLOW_TRACKING_PASSWORD"] = "password"
+        # os.environ["LOGNAME"] = "st125287-a3"
+        # model_name = "st125287-a3-model"
+        # model_version = 1
+
+        # model = mlflow.pyfunc.load_model(model_uri=f"models:/{model_name}/{model_version}")
+        
         feature_names = ['year', 'engine', 'km_driven', 'mileage']
         features = {
             'year': [year],
@@ -90,7 +114,7 @@ def prediction(year: float, engine: float, km_driven: float, mileage: float) -> 
             'km_driven': [km_driven],
             'mileage':[mileage]
         }
-        loaded_model = pickle.load(open('../model/a3_model.model', 'rb')) # new_model
+        # loaded_model = pickle.load(open('../model/a3_model.model', 'rb')) # new_model
         scaler = pickle.load(open("../model/a3_scaler.model",'rb'))
 
         # feature_names = ['year', 'engine', 'km_driven', 'mileage']
@@ -100,7 +124,7 @@ def prediction(year: float, engine: float, km_driven: float, mileage: float) -> 
         X = pd.DataFrame(features, index=[0])
         X[feature_names]= scaler.transform(X[feature_names])
         X = X.to_numpy()
-        prediction = loaded_model.predict(X)
+        prediction = model.predict(X)
         
         return prediction
     except Exception as e:
