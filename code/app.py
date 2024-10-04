@@ -137,6 +137,18 @@ def getDefaultValue() -> tuple:
 
     return median_year, median_engine, median_km_driven, mean_milage
 
+
+def get_X(user_year, user_engine, user_km_driven, user_mileage):
+    default_year, default_engine, default_km_driven, default_mileage = getDefaultValue()
+
+    # fill with default values if user input is empty    
+    user_year = user_year if user_year else default_year
+    user_engine = user_engine if user_engine else default_engine
+    user_km_driven = user_km_driven if user_km_driven else default_km_driven
+    user_mileage = user_mileage if user_mileage else default_mileage
+
+    return user_year, user_engine, user_km_driven, user_mileage
+
 @app.callback(
     Output('output-div', 'children'),
     [Input('submit-button', 'n_clicks')],
@@ -146,13 +158,8 @@ def getDefaultValue() -> tuple:
      State('input-4', 'value')]
 )
 def update_output(n_clicks, user_year, user_engine, user_km_driven, user_mileage):
-    default_year, default_engine, default_km_driven, default_mileage = getDefaultValue()
+    user_year, user_engine, user_km_driven, user_mileage = get_X(user_year, user_engine, user_km_driven, user_mileage)
     
-    user_year = user_year if user_year else default_year
-    user_engine = user_engine if user_engine else default_engine
-    user_km_driven = user_km_driven if user_km_driven else default_km_driven
-    user_mileage = user_mileage if user_mileage else default_mileage
-
     prediction_label = {
         0: 'Cheap',
         1: 'Moderate',
