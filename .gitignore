@@ -1,3 +1,6 @@
 mlruns/
 code/__pycache__/
 code/.pytest_cache/
+code/.env
+.pytest_cache/
+.env

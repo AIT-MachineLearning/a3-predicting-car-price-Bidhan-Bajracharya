@@ -1,0 +1,11 @@
+.pytest_cache
+data/
+mlruns/
+model/
+README.md
+a3_prediction.ipynb
+code/__pycache__/
+code/.pytest_cache/
+code/mlruns/
+code/.env
+.env

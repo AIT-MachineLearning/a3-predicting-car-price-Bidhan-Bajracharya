@@ -37,7 +37,8 @@ app.layout = html.Div([
             html.Li("Specify the engine capacity in CC."),
             html.Li("Provide the total kilometers driven."),
             html.Li("Enter the car's mileage in km/l."),
-            html.Li("Using the model, it will predict if the car is cheap, modertae, expensive or very expensive"),
+            html.Li("If nothing is provided, default values will be used."),
+            html.Li("Using the model, it will predict if the car is cheap, moderate, expensive or very expensive"),
         ], style={'margin-left': '20px', 'color': '#34495e', 'font-size': '16px'}),
     ], style={'padding': '15px', 'border': '1px solid #bdc3c7', 'border-radius': '5px', 'background-color': '#ecf0f1', 'margin-bottom': '20px'}),
     
@@ -115,7 +116,7 @@ def prediction(year: float, engine: float, km_driven: float, mileage: float) -> 
             'mileage':[mileage]
         }
         # loaded_model = pickle.load(open('../model/a3_model.model', 'rb')) # new_model
-        scaler = pickle.load(open("../model/a3_scaler.model",'rb'))
+        scaler = pickle.load(open("a3_scaler.model",'rb'))
 
         # feature_names = ['year', 'engine', 'km_driven', 'mileage']
         # user_sample = np.array([[year, engine, km_driven, mileage]])
@@ -136,7 +137,7 @@ def getDefaultValue() -> tuple:
     Get the default values for the input fields.
     """
 
-    df = pd.read_csv('../data/Cars.csv')
+    df = pd.read_csv('Cars.csv')
     owner_map = {
         'First Owner': 1,
         'Second Owner': 2,
@@ -205,4 +206,7 @@ def update_output(n_clicks, user_year, user_engine, user_km_driven, user_mileage
     return ""
 
 if __name__ == '__main__':
+    # before running the app, downloading the model from mlflow
+    # from utils import load_mlflow
+    # load_mlflow(stage="Production")
     app.run_server(host='0.0.0.0', port = 8050, debug=True)
