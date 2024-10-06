@@ -3,7 +3,7 @@ name: Dash App CI
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   # Step 1: Test the app
