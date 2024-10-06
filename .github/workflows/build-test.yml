@@ -62,14 +62,11 @@ jobs:
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}  # Retrieves the private SSH key from GitHub Secrets
           name: id_rsa  # Saves the key as ~/.ssh/id_rsa on the runner
+          known_hosts: |
+            bazooka.cs.ait.ac.th
+            ml.brain.cs.ait.ac.th
 
-      # Step 2: Set up known hosts for both the proxy and target servers
-      - name: Setup SSH known hosts
-        run: |
-          ssh-keyscan -H bazooka.cs.ait.ac.th >> ~/.ssh/known_hosts
-          ssh-keyscan -H ml.brain.cs.ait.ac.th >> ~/.ssh/known_hosts
-
-      # Step 3: SSH into the target server via the proxy and run docker-compose
+      # Step 2: SSH into the target server via the proxy and run docker-compose
       - name: SSH into server and run deployment
         run: |
           ssh -i ~/.ssh/id_rsa -o ProxyJump=st125287@bazooka.cs.ait.ac.th st125287@ml.brain.cs.ait.ac.th << EOF
