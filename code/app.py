@@ -176,11 +176,19 @@ def get_X(user_year, user_engine, user_km_driven, user_mileage):
 def update_output(n_clicks, user_year, user_engine, user_km_driven, user_mileage):
     user_year, user_engine, user_km_driven, user_mileage = get_X(user_year, user_engine, user_km_driven, user_mileage)
     
+    # [   29999.,   260000.,   450000.,   680000., 10000000.]
     prediction_label = {
         0: 'Cheap',
         1: 'Moderate',
         2: 'Expensive',
         3: 'Very Expensive'
+    }
+
+    prediction_range = {
+        0: '29999 to 260000',
+        1: '260000 to 450000',
+        2: '450000 to 680000',
+        3: '680000 to 10000000'
     }
     
     try:
@@ -193,7 +201,7 @@ def update_output(n_clicks, user_year, user_engine, user_km_driven, user_mileage
 
     if n_clicks > 0:
         pred_val = prediction(user_year, user_engine, user_km_driven, user_mileage)
-        return f"**Predicted selling category**: {prediction_label[pred_val[0]]}"
+        return f"**Predicted selling category**: {prediction_label[pred_val[0]]}  \n**Price Range lies between**: {prediction_range[pred_val[0]]}"
     return ""
 
 if __name__ == '__main__':
