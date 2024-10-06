@@ -193,7 +193,7 @@ def update_output(n_clicks, user_year, user_engine, user_km_driven, user_mileage
 
     if n_clicks > 0:
         pred_val = prediction(user_year, user_engine, user_km_driven, user_mileage)
-        return f"**Predicted selling price**: {prediction_label[pred_val[0]]}"
+        return f"**Predicted selling category**: {prediction_label[pred_val[0]]}"
     return ""
 
 if __name__ == '__main__':
