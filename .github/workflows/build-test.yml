@@ -11,29 +11,16 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Add SSH private key for authentication
-      - name: Add SSH private key
-        uses: shimataro/ssh-key-action@v2
+      - name: SSH Remote Commands
+        uses: appleboy/ssh-action@v1.0.0
         with:
-          key: ${{ secrets.SSH_PRIVATE_KEY }}  # Retrieves the private SSH key from GitHub Secrets
-          name: id_rsa  # Saves the key as ~/.ssh/id_rsa on the runner
-          known_hosts: |
-            bazooka.cs.ait.ac.th ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOwQUaDWgDiCbJWU/OvcXArtRxjB8Wtl3buFOBrf3FPHz9tezwTxvHsEerRGKJxSk7OOOKQTwIv6NNjlPyq4ekfjI+7vvWfWLZQK+PbWsOVjMqSYIGujz0y4d3uxSjpXYcyrzQhgR1YNND97JhBmPQK+lw4Zx6Z9bBawWAyRJlnUxDRYi1sbpkgxkZY13ph5HX6Kdx1HHqRoXZw2Ft3pOE0kPhXakvVcsXb2cWVAgtq7iElmUYpYx2qaiWjx7gqilGLeev6E1hhvkGZ8MmtEwzk8NnmExlrTmcczVmUzQVql/01efxLzxRjTdxKyQGnAiXFr0ZbccryUZKACbpNbCp
-            ml.brain.cs.ait.ac.th ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQChKLExhtjL8zfCuxtys2RfAAWRhHCy716z10m2oRkQehGRu1wJRAcc2ljhqxTlfFQEBteolgd1PqGlOqqWW2bkzRaKSrnbuOhSUHiA3rTK9xKiTnwxPXUeY79ITbThcBZdApvEaRxG77qlubkk9N2dpDU4B9Rt/UOubsnnDQhHHD38fkMNISwN0LfIOEWlM4XYW5FuxaZeyISvyT9Z0ODo7t0PszFyyn1ajQ5x9I9mV+MdJkK6OyVos2IuWeYGYlD8DL49CT+rPD0YSuxepLmNDM/DreUpJEyAkmt3NgXKxNq5owxunL23y9o0WaWuWi1E04ssUy1sTazqiIE777pGDwnRToT1ueKw/ALeRD9yHPeUlds+7JCUY+Uhe1q9eGeGsJP2cadgaGtn1zHh+QCYl2OSUs+2CNbu/ieAhiPW5geaH9JRfm0+kXDOMk8hDVJKM0hIqQDfoIQSxtsNZBoLYRpxwubVvvjbzEP2jnNIBwsSrTyC2oyUMIMP42d8u/c=
-
-      # Step 2: SSH into the target server via the proxy and run docker-compose
-      - name: SSH into server and run deployment
-        run: |
-          ssh -i ~/.ssh/id_rsa -o ProxyJump=st125287@bazooka.cs.ait.ac.th st125287@ml.brain.cs.ait.ac.th << EOF
-            # Pull the latest image from Docker Hub
+          host: ${{ vars.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEYKEY }}
+          proxy_host: ${{ vars.PROXY_HOST }}
+          proxy_username: ${{ secrets.USERNAME }}
+          proxy_key: ${{ secrets.SSH_PRIVATE_KEYKEY }}
+          script: |
             docker pull bidhan01/car_prediction_v3:latest
-            
-            # Navigate to the directory with the docker-compose file
-            cd st125287/docker-compose.yaml
-            
-            # Bring down the existing containers
-            docker compose down --remove-orphans
-            
-            # Bring up the containers with the new image
-            docker compose up -d
-          EOF
+            docker compose -f st125287/docker-compose.yaml down --remove-orphans
+            docker compose -f st125287/docker-compose.yaml up -d
