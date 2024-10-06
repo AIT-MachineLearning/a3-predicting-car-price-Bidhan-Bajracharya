@@ -5,8 +5,9 @@ on:
     branches:
       - main
 
+
 jobs:
-  # Step 1: Test the app
+  # Step 1: Test the app using Docker
   test:
     runs-on: ubuntu-latest
     
@@ -15,19 +16,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Python environment
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11.4'
+      # Set up Docker
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-      # Install dependencies
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+      # Build the Docker image for testing
+      - name: Build Docker image for testing
+        run: docker build -t dash-app-test -f code/Dockerfile code
 
-      # Run tests
-      - name: Run tests
-        run: |
-          pytest
+      # Run tests inside the Docker container
+      - name: Run tests in Docker
+        run: docker run dash-app-test pytest
