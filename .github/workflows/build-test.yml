@@ -51,3 +51,37 @@ jobs:
       # Push the image to DockerHub
       - name: Push Docker image to DockerHub
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/car_prediction_v3:latest
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Add SSH private key for authentication
+      - name: Add SSH private key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}  # Retrieves the private SSH key from GitHub Secrets
+          name: id_rsa  # Saves the key as ~/.ssh/id_rsa on the runner
+
+      # Step 2: Set up known hosts for both the proxy and target servers
+      - name: Setup SSH known hosts
+        run: |
+          ssh-keyscan -H bazooka.cs.ait.ac.th >> ~/.ssh/known_hosts
+          ssh-keyscan -H ml.brain.cs.ait.ac.th >> ~/.ssh/known_hosts
+
+      # Step 3: SSH into the target server via the proxy and run docker-compose
+      - name: SSH into server and run deployment
+        run: |
+          ssh -i ~/.ssh/id_rsa -o ProxyJump=st125287@bazooka.cs.ait.ac.th st125287@ml.brain.cs.ait.ac.th << EOF
+            # Pull the latest image from Docker Hub
+            docker pull bidhan01/car_prediction_v3:latest
+            
+            # Navigate to the directory with the docker-compose file
+            cd st125287/docker-compose.yaml
+            
+            # Bring down the existing containers
+            docker-compose down --remove-orphans
+            
+            # Bring up the containers with the new image
+            docker-compose up -d
+          EOF
