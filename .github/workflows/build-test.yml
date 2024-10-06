@@ -16,10 +16,10 @@ jobs:
         with:
           host: ${{ vars.HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEYKEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           proxy_host: ${{ vars.PROXY_HOST }}
           proxy_username: ${{ secrets.USERNAME }}
-          proxy_key: ${{ secrets.SSH_PRIVATE_KEYKEY }}
+          proxy_key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             docker pull bidhan01/car_prediction_v3:latest
             docker compose -f st125287/docker-compose.yaml down --remove-orphans
