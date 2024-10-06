@@ -63,8 +63,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}  # Retrieves the private SSH key from GitHub Secrets
           name: id_rsa  # Saves the key as ~/.ssh/id_rsa on the runner
           known_hosts: |
-            bazooka.cs.ait.ac.th
-            ml.brain.cs.ait.ac.th
+            bazooka.cs.ait.ac.th ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOwQUaDWgDiCbJWU/OvcXArtRxjB8Wtl3buFOBrf3FPHz9tezwTxvHsEerRGKJxSk7OOOKQTwIv6NNjlPyq4ekfjI+7vvWfWLZQK+PbWsOVjMqSYIGujz0y4d3uxSjpXYcyrzQhgR1YNND97JhBmPQK+lw4Zx6Z9bBawWAyRJlnUxDRYi1sbpkgxkZY13ph5HX6Kdx1HHqRoXZw2Ft3pOE0kPhXakvVcsXb2cWVAgtq7iElmUYpYx2qaiWjx7gqilGLeev6E1hhvkGZ8MmtEwzk8NnmExlrTmcczVmUzQVql/01efxLzxRjTdxKyQGnAiXFr0ZbccryUZKACbpNbCp
+            ml.brain.cs.ait.ac.th ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQChKLExhtjL8zfCuxtys2RfAAWRhHCy716z10m2oRkQehGRu1wJRAcc2ljhqxTlfFQEBteolgd1PqGlOqqWW2bkzRaKSrnbuOhSUHiA3rTK9xKiTnwxPXUeY79ITbThcBZdApvEaRxG77qlubkk9N2dpDU4B9Rt/UOubsnnDQhHHD38fkMNISwN0LfIOEWlM4XYW5FuxaZeyISvyT9Z0ODo7t0PszFyyn1ajQ5x9I9mV+MdJkK6OyVos2IuWeYGYlD8DL49CT+rPD0YSuxepLmNDM/DreUpJEyAkmt3NgXKxNq5owxunL23y9o0WaWuWi1E04ssUy1sTazqiIE777pGDwnRToT1ueKw/ALeRD9yHPeUlds+7JCUY+Uhe1q9eGeGsJP2cadgaGtn1zHh+QCYl2OSUs+2CNbu/ieAhiPW5geaH9JRfm0+kXDOMk8hDVJKM0hIqQDfoIQSxtsNZBoLYRpxwubVvvjbzEP2jnNIBwsSrTyC2oyUMIMP42d8u/c=
 
       # Step 2: SSH into the target server via the proxy and run docker-compose
       - name: SSH into server and run deployment
@@ -77,8 +77,8 @@ jobs:
             cd st125287/docker-compose.yaml
             
             # Bring down the existing containers
-            docker-compose down --remove-orphans
+            docker compose down --remove-orphans
             
             # Bring up the containers with the new image
-            docker-compose up -d
+            docker compose up -d
           EOF
