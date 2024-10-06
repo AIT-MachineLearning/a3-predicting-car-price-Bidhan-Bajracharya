@@ -20,7 +20,7 @@ try:
     os.environ["MLFLOW_TRACKING_PASSWORD"] = "password"
     os.environ["LOGNAME"] = "st125287-a3"
     model_name = "st125287-a3-model"
-    model_version = 1
+    model_version = 2
 
     model = mlflow.pyfunc.load_model(model_uri=f"models:/{model_name}/{model_version}")
 except Exception as e:
@@ -99,15 +99,6 @@ def prediction(year: float, engine: float, km_driven: float, mileage: float) -> 
     :return: The predicted category of selling price of the car.
     """
     try:
-        # mlflow.set_tracking_uri("http://mlflow.ml.brain.cs.ait.ac.th/")
-        # os.environ["MLFLOW_TRACKING_USERNAME"] = "admin"
-        # os.environ["MLFLOW_TRACKING_PASSWORD"] = "password"
-        # os.environ["LOGNAME"] = "st125287-a3"
-        # model_name = "st125287-a3-model"
-        # model_version = 1
-
-        # model = mlflow.pyfunc.load_model(model_uri=f"models:/{model_name}/{model_version}")
-        
         feature_names = ['year', 'engine', 'km_driven', 'mileage']
         features = {
             'year': [year],
@@ -137,7 +128,7 @@ def getDefaultValue() -> tuple:
     Get the default values for the input fields.
     """
 
-    df = pd.read_csv('Cars.csv')
+    df = pd.read_csv('./Data/Cars.csv')
     owner_map = {
         'First Owner': 1,
         'Second Owner': 2,
