@@ -63,8 +63,6 @@ jobs:
           proxy_username: ${{ secrets.USERNAME }}
           proxy_key: ${{ secrets.PROXY_KEY }}
           script: |
-            echo "The proxy key is being passed: ***"
-            echo "Masked proxy key: ${{ secrets.PROXY_KEY }}"
             docker pull bidhan01/car_prediction_v3:latest
             docker compose -f st125287/docker-compose.yaml down --remove-orphans
             docker compose -f st125287/docker-compose.yaml up -d
