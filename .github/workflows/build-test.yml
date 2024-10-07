@@ -63,4 +63,4 @@ jobs:
           proxy_username: ${{ secrets.USERNAME }}
           proxy_key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            echo "Hello World"
+            echo "Deploying the app..."
