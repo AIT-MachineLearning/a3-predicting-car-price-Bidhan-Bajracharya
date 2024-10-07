@@ -63,5 +63,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            mkdir test_dir
             docker compose -f st125287/docker-compose.yaml down --remove-orphans
             docker compose -f st125287/docker-compose.yaml up -d
