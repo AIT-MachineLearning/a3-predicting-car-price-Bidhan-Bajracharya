@@ -43,7 +43,7 @@ jobs:
         with:
           # Your image name
           images: bidhan01/car_pred_v3
-          tags: type=semver,pattern={{raw}}
+          tags: latest
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
