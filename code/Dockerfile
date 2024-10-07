@@ -1,6 +1,6 @@
 FROM python:3.11.4-bookworm
 
-WORKDIR /base/code
+WORKDIR /base
 
 RUN pip3 install dash
 RUN pip3 install pandas
@@ -17,6 +17,6 @@ RUN pip3 install pytest-depends
 # add mlflow
 RUN pip3 install mlflow
 
-COPY . /base/code
+COPY . /base
 
 CMD tail -f /dev/null
